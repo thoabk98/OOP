@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import controller.employee.EmployeeController;
 import controller.product.ProductController;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
@@ -202,7 +203,7 @@ public class HomeController implements Initializable {
 //           // nm.setId(id);
 //            //SellController sellController = fXMLLoader.getController();
 //            sellController.setNameMedia(usrNameMedia);
-//            sellController.acMainSells.getStylesheets().add("/style/MainStyle.css");
+//           sellController.acMainSells.getStylesheets().add("/style/MainStyle.css");
         //sellController.tbtnSellOnAction(event);
         AnchorPane anchorPane = fXMLLoader.getRoot();
         acContent.getChildren().clear();
@@ -212,14 +213,9 @@ public class HomeController implements Initializable {
     @FXML
     private void btnStoreOnClick(ActionEvent event) throws IOException {
         sotreActive();
-
-        //StockController sc = new StockController();
-            ProductController pc = new ProductController();
+        ProductController pc = new ProductController();
         FXMLLoader fXMLLoader = new FXMLLoader();
         fXMLLoader.load(getClass().getResource("/view/Product.fxml").openStream());
-       // nm.setId(id);
-        //StockController stockController = fXMLLoader.getController();
-        //stockController.btnStockOnAction(event);
         ProductController productController = fXMLLoader.getController();
         productController.viewDetail();
         //stockController.settingPermission();
@@ -232,7 +228,22 @@ public class HomeController implements Initializable {
 
         acContent.getChildren().add(anchorPane);
     }
+    @FXML
+    private void btnEmplopyeOnClick(ActionEvent e) throws IOException{
+        employeeActive();
+        EmployeeController eController = new EmployeeController();
+        FXMLLoader fXMLLoader = new FXMLLoader();
+        fXMLLoader.load(getClass().getResource("/view/Employee.fxml").openStream());
+        EmployeeController employeeController = fXMLLoader.getController();
+        employeeController.viewEmployeeList();
 
+        AnchorPane anchorPane;
+        anchorPane = fXMLLoader.getRoot();
+
+        acContent.getChildren().clear();
+
+        acContent.getChildren().add(anchorPane);
+    }
 
     @FXML
     private void hlUpdateAccount(ActionEvent event) {

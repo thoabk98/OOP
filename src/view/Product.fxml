@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane fx:id="spProductContent" prefHeight="580.0" prefWidth="1004.0" stylesheets="@../style/MainStyle.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.product.ProductController">
+<AnchorPane fx:id="spProductContent" prefHeight="580.0" prefWidth="1004.0" stylesheets="/style/MainStyle.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.product.ProductController">
     <children>
         <AnchorPane id="AnchorPane" prefHeight="494.0" prefWidth="834.0">
             <children>
@@ -40,8 +40,8 @@
                         <HBox alignment="CENTER_RIGHT" prefHeight="66.0" prefWidth="944.0" spacing="20.0" BorderPane.alignment="CENTER">
                             <children>
                                 <Button fx:id="btnAddNew" mnemonicParsing="false" onAction="#btnAddNewOnAction" text="Add New" />
-                                <Button fx:id="btnUpdate" mnemonicParsing="false" text="Update" />
-                                <Button fx:id="btnDelete" mnemonicParsing="false" text="Delete" />
+                                <Button fx:id="btnUpdate" mnemonicParsing="false" onAction="#btnUpdateOnAction" text="Update" />
+                                <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#btnDeleteOnAction" text="Delete" />
                             </children>
                             <BorderPane.margin>
                                 <Insets right="20.0" />
@@ -54,7 +54,7 @@
                                 <HBox alignment="CENTER" prefHeight="44.0" prefWidth="944.0" spacing="10.0" BorderPane.alignment="CENTER">
                                     <children>
                                         <TextField fx:id="tfSearch" prefHeight="31.0" prefWidth="608.0" />
-                                        <Button fx:id="btnRefresh" mnemonicParsing="false" prefHeight="31.0" prefWidth="32.0" />
+                                        <Button fx:id="btnRefresh" mnemonicParsing="false" onAction="#btnRefreshOnACtion" prefHeight="31.0" prefWidth="32.0" />
                                     </children>
                                 </HBox>
                             </top>

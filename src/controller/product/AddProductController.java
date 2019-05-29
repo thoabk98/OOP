@@ -72,4 +72,5 @@ public class AddProductController implements Initializable{
         alert.showAndWait();
     }
 
+
 }

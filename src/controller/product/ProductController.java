@@ -10,6 +10,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -22,6 +24,7 @@ import model.ProductModel;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ProductController implements Initializable {
@@ -83,5 +86,58 @@ public class ProductController implements Initializable {
 
 
     }
+    @FXML
+    private void btnDeleteOnAction(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Login Now");
+        alert.setHeaderText("Confirm");
+        alert.setContentText("Are you sure to delete this item \n to Confirm click ok");
+        alert.initStyle(StageStyle.UNDECORATED);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            int item = tblViewCurrentStore.getSelectionModel().getSelectedItem().getProductID();
+            System.out.println("Product id" + item);
+            ProductModel productModel = new ProductModel();
+            productModel.deleteProduct(item);
+            //btnRefreshOnACtion(event);
+            tblViewCurrentStore.getItems().clear();
+            viewDetail();
+        }
 
+    }
+    @FXML
+    private void btnRefreshOnACtion(ActionEvent event) {
+        tblViewCurrentStore.getItems().clear();
+        viewDetail();
+    }
+
+
+    @FXML
+    private void btnUpdateOnAction(ActionEvent event) {
+        if (!tblViewCurrentStore.getSelectionModel().isEmpty()) {
+            viewSelected();
+        } else {
+            System.out.println("EMPTY SELECTION");
+        }
+    }
+    private void viewSelected() {
+        AddProductController apc = new AddProductController();
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/view/AddProduct.fxml"));
+        try {
+            fxmlLoader.load();
+            Parent parent = fxmlLoader.getRoot();
+            Scene scene = new Scene(parent);
+            scene.setFill(new Color(0, 0, 0, 0));
+            AddProductController addProductController = fxmlLoader.getController();
+            int item = tblViewCurrentStore.getSelectionModel().getSelectedItem().getProductID();
+            Stage nStage = new Stage();
+            nStage.setScene(scene);
+            nStage.initModality(Modality.APPLICATION_MODAL);
+            nStage.initStyle(StageStyle.TRANSPARENT);
+            nStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
