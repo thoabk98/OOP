@@ -22,7 +22,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" fx:id="acMain" prefHeight="593.0" prefWidth="767.0" stylesheets="" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HomeController">
+<AnchorPane id="AnchorPane" fx:id="acMain" prefHeight="593.0" prefWidth="767.0" stylesheets="@../style/Application.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HomeController">
     <children>
         <StackPane layoutY="-9.0" prefHeight="593.0" prefWidth="767.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -205,11 +205,7 @@
                                                         <Label fx:id="lblUserId" text="Label" textFill="#eeeded" visible="false" />
                                                     </children>
                                                 </HBox>
-                                                <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
-                                                    <children>
-                                                        <Label layoutX="62.0" layoutY="23.0" text="My Logo Goes Hear" textFill="#fff7f7" />
-                                                    </children>
-                                                </AnchorPane>
+                                                <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" />
                                             </children>
                                         </GridPane>
                                     </children>

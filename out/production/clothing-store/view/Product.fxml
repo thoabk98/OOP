@@ -1,39 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 
-<AnchorPane fx:id="spProductContent" prefHeight="580.0" prefWidth="1004.0"  xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ProductController">
+<AnchorPane fx:id="spProductContent" prefHeight="580.0" prefWidth="1004.0" stylesheets="@../style/MainStyle.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.product.ProductController">
     <children>
         <AnchorPane id="AnchorPane" prefHeight="494.0" prefWidth="834.0">
             <children>
-                <BorderPane layoutX="220.0" layoutY="140.0" prefHeight="479.0" prefWidth="639.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <BorderPane layoutX="220.0" layoutY="140.0" prefHeight="494.0" prefWidth="834.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <center>
-                        <TableView fx:id="tblViewCurrentStore" editable="true"  prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: none; -fx-border-color: none;" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
+                        <TableView fx:id="tblViewCurrentStore" editable="true" prefHeight="492.0" prefWidth="817.0" style="-fx-background-color: none; -fx-border-color: none;" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
                             <columns>
-                                <TableColumn fx:id="tblClmProductId" prefWidth="150.0" text="ID" />
-                                <TableColumn fx:id="tblClmProductName" prefWidth="150.0" text="NAME" />
-                                <TableColumn fx:id="tblClmProductquantity" prefWidth="100.0" text="Quantity" />
-                                <TableColumn fx:id="tblClmProductUnit" prefWidth="75.0" text="Unit" />
-                                <TableColumn fx:id="tblClmProductRMA" prefWidth="100.0" text="RMA" />
-                                <TableColumn fx:id="tblClmProductSupplyer" prefWidth="150.0" text="Supplier" />
-                                <TableColumn fx:id="tblClmProductBrand" prefWidth="100.0" text="Brand" />
-                                <TableColumn fx:id="tblClmProductCatagory" prefWidth="100.0" text="Category" />
-                                <TableColumn fx:id="tblClmProductPursesPrice" prefWidth="150.0" text="Purses Price" />
-                                <TableColumn fx:id="tblClmProductSellPrice" prefWidth="150.0" text="Sell Price" />
-                                <TableColumn fx:id="tblClmProductdate" prefWidth="100.0" text="Date" />
-                                <TableColumn fx:id="tblClmProductAddBy" prefWidth="75.0" text="Add By" />
-                                <TableColumn fx:id="tblClmProductdescription" prefWidth="202.0" text="Description" />
+                                <TableColumn fx:id="tblClmProductId" prefWidth="48.0" text="ID" />
+                                <TableColumn fx:id="tblClmProductName" prefWidth="205.0" text="NAME" />
+                                <TableColumn fx:id="tblClmProductCatagory" prefWidth="148.0" text="Category" />
+                                <TableColumn fx:id="tblClmProductSellPrice" prefWidth="112.0" text="SellingPrice" />
+                                <TableColumn fx:id="tblClmProductPursesPrice" prefWidth="137.0" text="OriginalPrice" />
+                                <TableColumn fx:id="tblClmProductBrand" prefWidth="114.0" text="Brand" />
+                                <TableColumn fx:id="tblClmProductquantity" prefWidth="62.0" text="inStock" />
                             </columns>
                             <contextMenu>
                                 <ContextMenu>
                                     <items>
-                                        <MenuItem fx:id="miSellSelected" mnemonicParsing="false"  text="Sell It" />
+                                        <MenuItem fx:id="miSellSelected" mnemonicParsing="false" text="Sell It" />
                                     </items>
                                 </ContextMenu>
                             </contextMenu>
@@ -42,9 +39,9 @@
                     <bottom>
                         <HBox alignment="CENTER_RIGHT" prefHeight="66.0" prefWidth="944.0" spacing="20.0" BorderPane.alignment="CENTER">
                             <children>
-                                <Button fx:id="btnAddNew" mnemonicParsing="false"  text="Add New" />
-                                <Button fx:id="btnUpdate" mnemonicParsing="false"  text="Update" />
-                                <Button fx:id="btnDelete" mnemonicParsing="false"  text="Delete" />
+                                <Button fx:id="btnAddNew" mnemonicParsing="false" onAction="#btnAddNewOnAction" text="Add New" />
+                                <Button fx:id="btnUpdate" mnemonicParsing="false" text="Update" />
+                                <Button fx:id="btnDelete" mnemonicParsing="false" text="Delete" />
                             </children>
                             <BorderPane.margin>
                                 <Insets right="20.0" />
@@ -56,8 +53,8 @@
                             <top>
                                 <HBox alignment="CENTER" prefHeight="44.0" prefWidth="944.0" spacing="10.0" BorderPane.alignment="CENTER">
                                     <children>
-                                        <TextField fx:id="tfSearch"  prefHeight="31.0" prefWidth="608.0" />
-                                        <Button fx:id="btnRefresh" mnemonicParsing="false"  prefHeight="31.0" prefWidth="32.0" />
+                                        <TextField fx:id="tfSearch" prefHeight="31.0" prefWidth="608.0" />
+                                        <Button fx:id="btnRefresh" mnemonicParsing="false" prefHeight="31.0" prefWidth="32.0" />
                                     </children>
                                 </HBox>
                             </top>

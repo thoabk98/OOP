@@ -1,15 +1,25 @@
-package controller;
+package controller.product;
 
+import controller.product.AddProductController;
 import dataStruct.Product;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.paint.Color;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import model.ProductModel;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -23,12 +33,7 @@ public class ProductController implements Initializable {
     private TableColumn<Object, Object> tblClmProductName;
     @FXML
     private TableColumn<Object, Object> tblClmProductquantity;
-    @FXML
-    private TableColumn<Object, Object> tblClmProductUnit;
-    @FXML
-    private TableColumn<Object, Object> tblClmProductRMA;
-    @FXML
-    private TableColumn<Object, Object> tblClmProductSupplyer;
+
     @FXML
     private TableColumn<Object, Object> tblClmProductBrand;
     @FXML
@@ -38,11 +43,7 @@ public class ProductController implements Initializable {
     @FXML
     private TableColumn<Object, Object> tblClmProductSellPrice;
     @FXML
-    private TableColumn<Object, Object> tblClmProductdate;
-    @FXML
-    private TableColumn<Object, Object> tblClmProductAddBy;
-    @FXML
-    private TableColumn<Object, Object> tblClmProductdescription;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -57,13 +58,29 @@ public class ProductController implements Initializable {
 
         tblClmProductId.setCellValueFactory(new PropertyValueFactory<>("productID"));
         tblClmProductName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        tblClmProductquantity.setCellValueFactory(new PropertyValueFactory<>("category"));
-        tblClmProductdescription.setCellValueFactory(new PropertyValueFactory<>("sellingPrice"));
-        tblClmProductBrand.setCellValueFactory(new PropertyValueFactory<>("originalPrice"));
-        tblClmProductCatagory.setCellValueFactory(new PropertyValueFactory<>("inStock"));
-        tblClmProductUnit.setCellValueFactory(new PropertyValueFactory<>("brand"));
-        tblClmProductPursesPrice.setCellValueFactory(new PropertyValueFactory<>("size"));
-        tblClmProductSellPrice.setCellValueFactory(new PropertyValueFactory<>("color"));
+        tblClmProductCatagory.setCellValueFactory(new PropertyValueFactory<>("category"));
+        tblClmProductSellPrice.setCellValueFactory(new PropertyValueFactory<>("sellingPrice"));
+        tblClmProductPursesPrice.setCellValueFactory(new PropertyValueFactory<>("originalPrice"));
+        tblClmProductquantity.setCellValueFactory(new PropertyValueFactory<>("inStock"));
+        tblClmProductBrand.setCellValueFactory(new PropertyValueFactory<>("brand"));
+
+    }
+    @FXML
+    private void btnAddNewOnAction(ActionEvent event) throws IOException {
+        AddProductController apc = new AddProductController();
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        Object load = fxmlLoader.load(getClass().getResource("/view/AddProduct.fxml").openStream());
+            Parent parent = fxmlLoader.getRoot();
+            Scene scene = new Scene(parent);
+            scene.setFill(new Color(0, 0, 0, 0));
+            AddProductController addProductController = fxmlLoader.getController();
+
+            Stage nStage = new Stage();
+            nStage.setScene(scene);
+            nStage.initModality(Modality.APPLICATION_MODAL);
+            nStage.initStyle(StageStyle.TRANSPARENT);
+            nStage.show();
+
 
     }
 

@@ -17,11 +17,12 @@ public class DBConnection {
         String dbName = Constant.DB_NAME;
         String userName = "root";
         String password = "hthoa137";
+        String unicode = "?useUnicode=yes&characterEncoding=UTF-8";
+        String url = "jdbc:mysql://localhost/" + dbName + unicode;
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
-
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/"+dbName,userName,password);
+            connection = DriverManager.getConnection(url,userName,password);
 
         } catch (Exception e) {
             e.printStackTrace();
