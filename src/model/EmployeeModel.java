@@ -115,7 +115,27 @@ public class EmployeeModel {
 
         return false;
     }
+    public  Employee getEmployee(int id){
+        connection = new DBConnection().getConnection();
+        try {
+            pst = connection.prepareStatement("SELECT * FROM " + Constant.DB_NAME + ".employee ? WHERE employeeID ="+id);
+            rs = pst.executeQuery();
+            Employee employee = new Employee();
+                employee.employeeID = rs.getInt(1);
+                employee.employeeName = rs.getString(2);
+                employee.numOfShift = rs.getInt(3);
+                employee.payPerShift = rs.getInt(4);
+            rs.close();
+            pst.close();
+            connection.close();
+            return employee;
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
     public List<Employee> getEmployeeList() {
         connection = new DBConnection().getConnection();
         try {

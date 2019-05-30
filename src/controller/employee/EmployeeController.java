@@ -1,5 +1,6 @@
 package controller.employee;
 
+import com.sun.prism.paint.ImagePattern;
 import dataStruct.Employee;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -7,13 +8,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import jdk.jfr.Event;
 import model.EmployeeModel;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.*;
 
 public class EmployeeController implements Initializable {
     @FXML
@@ -22,6 +27,10 @@ public class EmployeeController implements Initializable {
     private TableColumn<Object, Object> clmEmployeId;
     @FXML
     private TableColumn<Object, Objects> clmEmployeName;
+    @FXML
+    private TextField tfUserName;
+    @FXML
+    private TextField tfSalary;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -35,4 +44,25 @@ public class EmployeeController implements Initializable {
         clmEmployeId.setCellValueFactory(new PropertyValueFactory<>("employeeID"));
         clmEmployeName.setCellValueFactory(new PropertyValueFactory<>("employeeName"));
     }
+    public void tblEmloyeOnClick(MouseEvent mouseEvent) {
+        setselectedView();
+    }
+
+    private void setselectedView() {
+        clearAll();
+        Employee employeeList = tblEmoyeeList.getSelectionModel().getSelectedItem();
+        if (employeeList != null) {
+        //EmployeeModel employeeModel = new EmployeeModel();
+        //Employee employee = (Employee) employeeModel.getEmployee(employeeList.getEmployeeID());
+        tfUserName.setText(employeeList.getEmployeeName());
+        tfSalary.setText(String.valueOf(employeeList.payPerShift));
+        }
+
+    }
+    private void clearAll(){
+        tfSalary.clear();
+        tfUserName.clear();
+    }
+
+
 }
