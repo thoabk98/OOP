@@ -15,7 +15,7 @@ public class EmployeeModel {
     private Connection connection;
     private PreparedStatement pst;
     private ResultSet rs;
-    private List<Employee> employeeList;
+    private ArrayList<Employee> employeeList;
 
     public EmployeeModel() {
         employeeList = new ArrayList<>();
@@ -115,20 +115,27 @@ public class EmployeeModel {
 
         return false;
     }
-    public  Employee getEmployee(int id){
+
+    public Employee getEmployee(int id) {
         connection = new DBConnection().getConnection();
         try {
-            pst = connection.prepareStatement("SELECT * FROM " + Constant.DB_NAME + ".employee ? WHERE employeeID ="+id);
+            pst = connection.prepareStatement("SELECT * FROM " + Constant.DB_NAME + ".employee WHERE employeeID =?" );
+            pst.setInt(1, id);
             rs = pst.executeQuery();
             Employee employee = new Employee();
+            if (rs.next()) {
+
                 employee.employeeID = rs.getInt(1);
                 employee.employeeName = rs.getString(2);
                 employee.numOfShift = rs.getInt(3);
                 employee.payPerShift = rs.getInt(4);
+
+            }
             rs.close();
             pst.close();
             connection.close();
             return employee;
+
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -136,7 +143,8 @@ public class EmployeeModel {
 
         return null;
     }
-    public List<Employee> getEmployeeList() {
+
+    public ArrayList<Employee> getEmployeeList() {
         connection = new DBConnection().getConnection();
         try {
             pst = connection.prepareStatement("SELECT * FROM " + Constant.DB_NAME + ".employee");

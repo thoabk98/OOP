@@ -14,7 +14,7 @@ public class MonthlyRevenueModel {
     private Connection connection;
     private PreparedStatement pst;
     private ResultSet rs;
-    private List<MonthlyRevenue> revenueList;
+    private ArrayList<MonthlyRevenue> revenueList;
 
     public MonthlyRevenueModel() {
         revenueList = new ArrayList<>();
@@ -80,13 +80,14 @@ public class MonthlyRevenueModel {
         return false;
     }
 
-    public List<MonthlyRevenue> getRevenueList() {
-        MonthlyRevenue revenue = new MonthlyRevenue();
+    public ArrayList<MonthlyRevenue> getRevenueList() {
         connection = new DBConnection().getConnection();
         try {
             pst = connection.prepareStatement("SELECT * FROM " + Constant.DB_NAME + ".monthly_revenue");
             rs = pst.executeQuery();
             while (rs.next()) {
+                MonthlyRevenue revenue = new MonthlyRevenue();
+
                 revenue.timeID = rs.getString(1);
                 revenue.employeeExpence = rs.getDouble(2);
                 revenue.otherExpence = rs.getDouble(3);

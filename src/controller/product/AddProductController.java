@@ -18,8 +18,10 @@ import java.util.ResourceBundle;
 
 
 public class AddProductController implements Initializable{
-    public JEditorPane lblHeader;
-    private TextField tfValue;
+    @FXML
+    private Button btnUpdate;
+    @FXML
+    private Button btnSave;
     @FXML
     private Button btnClose;
     @FXML
@@ -39,7 +41,7 @@ public class AddProductController implements Initializable{
     @FXML
     private TextField tfProductCategory;
 
-
+    private int id;
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
 //        tfValue.setVisible(false);
@@ -51,6 +53,30 @@ public class AddProductController implements Initializable{
         Stage stage = (Stage) btnClose.getScene().getWindow();
         stage.close();
     }
+
+    private boolean checkInput() {
+        if (tfProductSize.getText().isEmpty()
+                || tfProductCategory.getText().isEmpty()
+                || tfProductBrand.getText().isEmpty()
+                || tfProductSellPrice.getText().isEmpty()
+                || tfProductName.getText().isEmpty()
+                || tfProductQuantity.getText().isEmpty()
+                || tfProductPursesPrice.getText().isEmpty()) {
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("error");
+            alert.setHeaderText("ERROR : NULL FOUND");
+            alert.setContentText("Please fill all required field");
+            alert.initStyle(StageStyle.UNDECORATED);
+            alert.showAndWait();
+
+            return false;
+        }
+
+        return true;
+
+    }
+
     @FXML
     private void btnSaveOnAction(ActionEvent event) {
         Product newProduct = new Product();
@@ -66,11 +92,47 @@ public class AddProductController implements Initializable{
         productModel.addProduct(newProduct);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("error");
-        alert.setHeaderText("Sucess : save sucess ");
+        alert.setHeaderText("Success : save success ");
         alert.setContentText("Product added successfully");
         alert.initStyle(StageStyle.UNDECORATED);
         alert.showAndWait();
     }
 
+    @FXML
+    private void btnUpdateOnAction(ActionEvent actionEvent) {
+        if (checkInput()) {
+            Product newProduct = new Product();
+            newProduct.productID = id;
+            newProduct.name = tfProductName.getText();
+            newProduct.inStock = Integer.parseInt(tfProductQuantity.getText());
+            newProduct.brand = tfProductBrand.getText();
+            newProduct.category = tfProductCategory.getText();
+            newProduct.color = tfProductColor.getText();
+            newProduct.size = Integer.parseInt(tfProductSize.getText());
+            newProduct.originalPrice = Double.parseDouble(tfProductPursesPrice.getText());
+            newProduct.sellingPrice = Double.parseDouble(tfProductSellPrice.getText());
+            ProductModel productModel = new ProductModel();
+            productModel.updateProduct(newProduct);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("error");
+            alert.setHeaderText("Success : update success ");
+            alert.setContentText("Product updated successfully");
+            alert.initStyle(StageStyle.UNDECORATED);
+            alert.showAndWait();
+        }
+    }
 
+    public void setupUpdate (Product product) {
+        id = product.productID;
+        tfProductName.setText(product.name);
+        tfProductBrand.setText(product.brand);
+        tfProductCategory.setText(product.category);
+        tfProductColor.setText(product.color);
+        tfProductPursesPrice.setText(String.valueOf(product.originalPrice));
+        tfProductSellPrice.setText(String.valueOf(product.sellingPrice));
+        tfProductSize.setText(String.valueOf(product.size));
+        tfProductQuantity.setText(String.valueOf(product.inStock));
+        btnSave.setVisible(false);
+        btnUpdate.setVisible(true);
+    }
 }

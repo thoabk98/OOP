@@ -8,6 +8,9 @@ import java.util.logging.Logger;
 
 import controller.employee.EmployeeController;
 import controller.product.ProductController;
+import controller.revenue.ViewRevenueController;
+import controller.sell.ViewSellController;
+import controller.setting.SettingController;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,9 +19,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
@@ -26,6 +26,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import model.UserModel;
 
 
 public class HomeController implements Initializable {
@@ -42,15 +43,12 @@ public class HomeController implements Initializable {
     @FXML
     private Button btnLogOut;
     @FXML
-    private MenuItem miPopOver;
-    @FXML
     private AnchorPane acDashBord;
     @FXML
     private AnchorPane acHead;
     @FXML
     private AnchorPane acMain;
-    @FXML
-    private MenuButton mbtnUsrInfoBox;
+
     @FXML
     private Button btnHome;
     @FXML
@@ -68,23 +66,18 @@ public class HomeController implements Initializable {
     @FXML
     private ImageView imgSellBtn;
     @FXML
+    private Button btnRevenue;
+    @FXML
+    private ImageView imgRevenueBtn;
+    @FXML
     private Button btnSettings;
     @FXML
     private ImageView imgSettingsBtn;
     @FXML
-    private Button btnAbout;
-    @FXML
-    private ImageView imgAboutBtn;
-    @FXML
     private Label lblUsrName;
     @FXML
-    private Label lblUsrNamePopOver;
-    @FXML
-    private Label lblFullName;
-    @FXML
     private Label lblRoleAs;
-    @FXML
-    private Hyperlink hlEditUpdateAccount;
+
     @FXML
     private Circle imgUsrTop;
     @FXML
@@ -96,7 +89,7 @@ public class HomeController implements Initializable {
     Image menuImageRed = new Image("/icon/menuRed.png");
     Image image;
 
-    String defultStyle = "-fx-border-width: 0px 0px 0px 5px;"
+    String defaultStyle = "-fx-border-width: 0px 0px 0px 5px;"
             + "-fx-border-color:none";
 
     String activeStyle = "-fx-border-width: 0px 0px 0px 5px;"
@@ -106,40 +99,22 @@ public class HomeController implements Initializable {
     Image homeRed = new Image("/icon/homeRed.png");
     Image stock = new Image("/icon/stock.png");
     Image stockRed = new Image("/icon/stockRed.png");
-    Image sell = new Image("/icon/sell2.png");
-    Image sellRed = new Image("/icon/sell2Red.png");
+    Image sell = new Image("/icon/sell.png");
+    Image sellRed = new Image("/icon/sellRed.png");
     Image employee = new Image("/icon/employe.png");
     Image employeeRed = new Image("/icon/employeRed.png");
     Image setting = new Image("/icon/settings.png");
     Image settingRed = new Image("/icon/settingsRed.png");
-    Image about = new Image("/icon/about.png");
-    Image aboutRed = new Image("/icon/aboutRed.png");
+    Image revenue = new Image("/icon/sell2.png");
+    Image revenueRed = new Image("/icon/sell2Red.png");
 
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        imgMenuBtn.setImage(menuImage);
         Image usrImg = new Image("/icon/d.png");
-
         imgUsrTop.setFill(new ImagePattern(usrImg));
         circleImgUsr.setFill(new ImagePattern(usrImg));
 
-    }
-    @FXML
-    private void sideMenuToogleBtnOnCLick(ActionEvent event) throws IOException {
-        if (sideMenuToogleBtn.isSelected()) {
-            imgMenuBtn.setImage(menuImageRed);
-            TranslateTransition sideMenu = new TranslateTransition(Duration.millis(200.0), acDashBord);
-            sideMenu.setByX(-130);
-            sideMenu.play();
-            acDashBord.getChildren().clear();
-        } else {
-            imgMenuBtn.setImage(menuImage);
-            TranslateTransition sideMenu = new TranslateTransition(Duration.millis(200.0), acDashBord);
-            sideMenu.setByX(130);
-            sideMenu.play();
-            acDashBord.getChildren().add(leftSideBarScroolPan);
-        }
     }
 
     @FXML
@@ -152,15 +127,7 @@ public class HomeController implements Initializable {
     }
 
     @FXML
-    private void acMain(KeyEvent event) {
-        if (event.getCode() == KeyCode.F11) {
-            Stage stage = (Stage) acMain.getScene().getWindow();
-            stage.setFullScreen(true);
-        }
-    }
-
-    @FXML
-    public void btnHomeOnClick(ActionEvent event){
+    public void btnHomeOnClick(ActionEvent event) {
         homeActive();
         FXMLLoader fxmlLoader = new FXMLLoader();
         try {
@@ -177,13 +144,16 @@ public class HomeController implements Initializable {
 
     }
 
-
     @FXML
-    public void btnAboutOnClick(ActionEvent e){
+    public void btnRevenueOnClick(ActionEvent e) {
+        revenueActive();
+
         try {
-            aboutActive();
             FXMLLoader fXMLLoader = new FXMLLoader();
-            fXMLLoader.load(getClass().getResource("/view/AboutMe.fxml").openStream());
+            fXMLLoader.load(getClass().getResource("/view/Revenue.fxml").openStream());
+
+            ViewRevenueController viewRevenueController = fXMLLoader.getController();
+            viewRevenueController.viewList();
 
             AnchorPane anchorPane = fXMLLoader.getRoot();
             acContent.getChildren().clear();
@@ -192,19 +162,16 @@ public class HomeController implements Initializable {
             Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     @FXML
     private void btnSellOnClick(ActionEvent event) throws IOException {
         sellActive();
-        //SellController controller = new SellController();
-        //userNameMedia nm = new userNameMedia();
 
         FXMLLoader fXMLLoader = new FXMLLoader();
         fXMLLoader.load(getClass().getResource("/view/Sell.fxml").openStream());
-//           // nm.setId(id);
-//            //SellController sellController = fXMLLoader.getController();
-//            sellController.setNameMedia(usrNameMedia);
-//           sellController.acMainSells.getStylesheets().add("/style/MainStyle.css");
-        //sellController.tbtnSellOnAction(event);
+
+        ViewSellController viewSellController = fXMLLoader.getController();
+        viewSellController.viewList();
         AnchorPane anchorPane = fXMLLoader.getRoot();
         acContent.getChildren().clear();
         acContent.getChildren().add(anchorPane);
@@ -213,13 +180,12 @@ public class HomeController implements Initializable {
     @FXML
     private void btnStoreOnClick(ActionEvent event) throws IOException {
         sotreActive();
+
         ProductController pc = new ProductController();
         FXMLLoader fXMLLoader = new FXMLLoader();
         fXMLLoader.load(getClass().getResource("/view/Product.fxml").openStream());
         ProductController productController = fXMLLoader.getController();
         productController.viewDetail();
-        //stockController.settingPermission();
-
 
         AnchorPane anchorPane;
         anchorPane = fXMLLoader.getRoot();
@@ -228,15 +194,15 @@ public class HomeController implements Initializable {
 
         acContent.getChildren().add(anchorPane);
     }
+
     @FXML
-    private void btnEmplopyeOnClick(ActionEvent e) throws IOException{
+    private void btnEmplopyeOnClick(ActionEvent e) throws IOException {
         employeeActive();
-        EmployeeController eController = new EmployeeController();
         FXMLLoader fXMLLoader = new FXMLLoader();
         fXMLLoader.load(getClass().getResource("/view/Employee.fxml").openStream());
         EmployeeController employeeController = fXMLLoader.getController();
         employeeController.viewEmployeeList();
-
+        employeeController.permission(lblUsrName.getText());
         AnchorPane anchorPane;
         anchorPane = fXMLLoader.getRoot();
 
@@ -246,19 +212,19 @@ public class HomeController implements Initializable {
     }
 
     @FXML
-    private void hlUpdateAccount(ActionEvent event) {
+    private void btnSettingOnClick(ActionEvent e) throws IOException {
+        settingsActive();
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.load(getClass().getResource("/view/Setting.fxml").openStream());
+        SettingController settingController = fxmlLoader.getController();
+        settingController.showDetails(lblUsrName.getText());
+        AnchorPane anchorPane = fxmlLoader.getRoot();
+
+        acContent.getChildren().clear();
+
+        acContent.getChildren().add(anchorPane);
 
     }
-
-    private void mbtnOnClick(ActionEvent event) {
-
-    }
-
-    @FXML
-    private void acMainOnMouseMove(MouseEvent event) {
-
-    }
-
 
     private void homeActive() {
         imgHomeBtn.setImage(homeRed);
@@ -266,13 +232,13 @@ public class HomeController implements Initializable {
         imgSellBtn.setImage(sell);
         imgEmployeBtn.setImage(employee);
         imgSettingsBtn.setImage(setting);
-        imgAboutBtn.setImage(about);
+        imgRevenueBtn.setImage(revenue);
         btnHome.setStyle(activeStyle);
-        btnStore.setStyle(defultStyle);
-        btnSell.setStyle(defultStyle);
-        btnEmplopye.setStyle(defultStyle);
-        btnSettings.setStyle(defultStyle);
-        btnAbout.setStyle(defultStyle);
+        btnStore.setStyle(defaultStyle);
+        btnSell.setStyle(defaultStyle);
+        btnEmplopye.setStyle(defaultStyle);
+        btnSettings.setStyle(defaultStyle);
+        btnRevenue.setStyle(defaultStyle);
     }
 
     private void sotreActive() {
@@ -281,13 +247,13 @@ public class HomeController implements Initializable {
         imgSellBtn.setImage(sell);
         imgEmployeBtn.setImage(employee);
         imgSettingsBtn.setImage(setting);
-        imgAboutBtn.setImage(about);
-        btnHome.setStyle(defultStyle);
+        imgRevenueBtn.setImage(revenue);
+        btnHome.setStyle(defaultStyle);
         btnStore.setStyle(activeStyle);
-        btnSell.setStyle(defultStyle);
-        btnEmplopye.setStyle(defultStyle);
-        btnSettings.setStyle(defultStyle);
-        btnAbout.setStyle(defultStyle);
+        btnSell.setStyle(defaultStyle);
+        btnEmplopye.setStyle(defaultStyle);
+        btnSettings.setStyle(defaultStyle);
+        btnRevenue.setStyle(defaultStyle);
     }
 
     private void sellActive() {
@@ -296,13 +262,13 @@ public class HomeController implements Initializable {
         imgSellBtn.setImage(sellRed);
         imgEmployeBtn.setImage(employee);
         imgSettingsBtn.setImage(setting);
-        imgAboutBtn.setImage(about);
-        btnHome.setStyle(defultStyle);
-        btnStore.setStyle(defultStyle);
+        imgRevenueBtn.setImage(revenue);
+        btnHome.setStyle(defaultStyle);
+        btnStore.setStyle(defaultStyle);
         btnSell.setStyle(activeStyle);
-        btnEmplopye.setStyle(defultStyle);
-        btnSettings.setStyle(defultStyle);
-        btnAbout.setStyle(defultStyle);
+        btnEmplopye.setStyle(defaultStyle);
+        btnSettings.setStyle(defaultStyle);
+        btnRevenue.setStyle(defaultStyle);
     }
 
     private void employeeActive() {
@@ -311,13 +277,13 @@ public class HomeController implements Initializable {
         imgSellBtn.setImage(sell);
         imgEmployeBtn.setImage(employeeRed);
         imgSettingsBtn.setImage(setting);
-        imgAboutBtn.setImage(about);
-        btnHome.setStyle(defultStyle);
-        btnStore.setStyle(defultStyle);
-        btnSell.setStyle(defultStyle);
+        imgRevenueBtn.setImage(revenue);
+        btnHome.setStyle(defaultStyle);
+        btnStore.setStyle(defaultStyle);
+        btnSell.setStyle(defaultStyle);
         btnEmplopye.setStyle(activeStyle);
-        btnSettings.setStyle(defultStyle);
-        btnAbout.setStyle(defultStyle);
+        btnSettings.setStyle(defaultStyle);
+        btnRevenue.setStyle(defaultStyle);
     }
 
     private void settingsActive() {
@@ -326,28 +292,47 @@ public class HomeController implements Initializable {
         imgSellBtn.setImage(sell);
         imgEmployeBtn.setImage(employee);
         imgSettingsBtn.setImage(settingRed);
-        imgAboutBtn.setImage(about);
-        btnHome.setStyle(defultStyle);
-        btnStore.setStyle(defultStyle);
-        btnSell.setStyle(defultStyle);
-        btnEmplopye.setStyle(defultStyle);
+        imgRevenueBtn.setImage(revenue);
+        btnHome.setStyle(defaultStyle);
+        btnStore.setStyle(defaultStyle);
+        btnSell.setStyle(defaultStyle);
+        btnEmplopye.setStyle(defaultStyle);
         btnSettings.setStyle(activeStyle);
-        btnAbout.setStyle(defultStyle);
+        btnRevenue.setStyle(defaultStyle);
     }
 
-    private void aboutActive() {
+    private void revenueActive() {
         imgHomeBtn.setImage(home);
         imgStoreBtn.setImage(stock);
         imgSellBtn.setImage(sell);
         imgEmployeBtn.setImage(employee);
         imgSettingsBtn.setImage(setting);
-        imgAboutBtn.setImage(aboutRed);
-        btnHome.setStyle(defultStyle);
-        btnStore.setStyle(defultStyle);
-        btnSell.setStyle(defultStyle);
-        btnEmplopye.setStyle(defultStyle);
-        btnSettings.setStyle(defultStyle);
-        btnAbout.setStyle(activeStyle);
+        imgRevenueBtn.setImage(revenueRed);
+        btnHome.setStyle(defaultStyle);
+        btnStore.setStyle(defaultStyle);
+        btnSell.setStyle(defaultStyle);
+        btnEmplopye.setStyle(defaultStyle);
+        btnSettings.setStyle(defaultStyle);
+        btnRevenue.setStyle(activeStyle);
     }
 
+    public void permission(String name) {
+        EmployeeController employeeController = new EmployeeController();
+
+        UserModel userModel = new UserModel();
+        if (userModel.getPermission(name) == false) {
+            btnRevenue.setDisable(true);
+        }
+
+    }
+
+    public void viewDetails(String name) {
+        lblUsrName.setText(name);
+        UserModel userModel = new UserModel();
+        if (userModel.getPermission(name) == false) {
+            lblRoleAs.setText("Employee");
+        } else {
+            lblRoleAs.setText("Adimin");
+        }
+    }
 }

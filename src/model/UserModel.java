@@ -127,12 +127,15 @@ public class UserModel {
         try {
             pst = connection.prepareStatement("SELECT isAdmin FROM " + Constant.DB_NAME + ".user WHERE username=?");
             pst.setString(1, username);
+
             rs = pst.executeQuery();
-            if (rs.getBoolean(1)) {
-                rs.close();
-                pst.close();
-                connection.close();
-                return true;
+            if (rs.next()) {
+                if (rs.getBoolean(1)) {
+                    rs.close();
+                    pst.close();
+                    connection.close();
+                    return true;
+                }
             }
             rs.close();
             pst.close();
@@ -145,6 +148,27 @@ public class UserModel {
         return false;
     }
 
+    public int getUserID(String username, String password) {
+        int id = -1;
+        connection = new DBConnection().getConnection();
+        try {
+            pst = connection.prepareStatement("SELECT user_id FROM " + Constant.DB_NAME + ".user WHERE username=? and password =?");
+            pst.setString(1, username);
+            pst.setString(2, password);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                id = rs.getInt(1);
+            }
+            rs.close();
+            pst.close();
+            connection.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return id;
+    }
     public int getUserID(String username) {
         int id = -1;
         connection = new DBConnection().getConnection();
@@ -152,7 +176,9 @@ public class UserModel {
             pst = connection.prepareStatement("SELECT user_id FROM " + Constant.DB_NAME + ".user WHERE username=?");
             pst.setString(1, username);
             rs = pst.executeQuery();
-            id = rs.getInt(1);
+            if (rs.next()) {
+                id = rs.getInt(1);
+            }
             rs.close();
             pst.close();
             connection.close();

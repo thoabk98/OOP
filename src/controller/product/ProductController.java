@@ -11,10 +11,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -24,10 +25,10 @@ import model.ProductModel;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ProductController implements Initializable {
+    public TextField tfSearch;
     @FXML
     private TableView<Product> tblViewCurrentStore;
     @FXML
@@ -70,74 +71,79 @@ public class ProductController implements Initializable {
     }
     @FXML
     private void btnAddNewOnAction(ActionEvent event) throws IOException {
-        AddProductController apc = new AddProductController();
         FXMLLoader fxmlLoader = new FXMLLoader();
         Object load = fxmlLoader.load(getClass().getResource("/view/AddProduct.fxml").openStream());
             Parent parent = fxmlLoader.getRoot();
             Scene scene = new Scene(parent);
             scene.setFill(new Color(0, 0, 0, 0));
-            AddProductController addProductController = fxmlLoader.getController();
 
             Stage nStage = new Stage();
             nStage.setScene(scene);
             nStage.initModality(Modality.APPLICATION_MODAL);
             nStage.initStyle(StageStyle.TRANSPARENT);
             nStage.show();
-
-
     }
-    @FXML
-    private void btnDeleteOnAction(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Login Now");
-        alert.setHeaderText("Confirm");
-        alert.setContentText("Are you sure to delete this item \n to Confirm click ok");
-        alert.initStyle(StageStyle.UNDECORATED);
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            int item = tblViewCurrentStore.getSelectionModel().getSelectedItem().getProductID();
-            System.out.println("Product id" + item);
-            ProductModel productModel = new ProductModel();
-            productModel.deleteProduct(item);
-            //btnRefreshOnACtion(event);
-            tblViewCurrentStore.getItems().clear();
-            viewDetail();
+
+
+    public void btnUpdateOnAction(ActionEvent actionEvent) throws IOException {
+        Product product;
+        if (!tblViewCurrentStore.getSelectionModel().isEmpty()) {
+
+            FXMLLoader fXMLLoader = new FXMLLoader();
+            fXMLLoader.load(getClass().getResource("/view/AddProduct.fxml").openStream());
+            Parent parent = fXMLLoader.getRoot();
+            Scene scene = new Scene(parent);
+            scene.setFill(new Color(0, 0, 0, 0));
+
+            product = tblViewCurrentStore.getSelectionModel().getSelectedItem();
+            AddProductController addProductController = fXMLLoader.getController();
+            addProductController.setupUpdate(product);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initStyle(StageStyle.TRANSPARENT);
+            stage.show();
         }
 
+        else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("ERROR");
+            alert.setContentText("Please choose an item to edit");
+            alert.initStyle(StageStyle.UNDECORATED);
+            alert.showAndWait();
+        }
     }
-    @FXML
-    private void btnRefreshOnACtion(ActionEvent event) {
+
+    public void btnRefreshOnAction(ActionEvent actionEvent) {
         tblViewCurrentStore.getItems().clear();
         viewDetail();
     }
 
 
-    @FXML
-    private void btnUpdateOnAction(ActionEvent event) {
+    public void btnDeleteOnAction(ActionEvent actionEvent) {
         if (!tblViewCurrentStore.getSelectionModel().isEmpty()) {
-            viewSelected();
-        } else {
-            System.out.println("EMPTY SELECTION");
+            ProductModel productModel = new ProductModel();
+            Product product = tblViewCurrentStore.getSelectionModel().getSelectedItem();
+            productModel.deleteProduct(product.productID);
+            tblViewCurrentStore.getItems().remove(tblViewCurrentStore.getSelectionModel().getSelectedItem());
         }
     }
-    private void viewSelected() {
-        AddProductController apc = new AddProductController();
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("/view/AddProduct.fxml"));
-        try {
-            fxmlLoader.load();
-            Parent parent = fxmlLoader.getRoot();
-            Scene scene = new Scene(parent);
-            scene.setFill(new Color(0, 0, 0, 0));
-            AddProductController addProductController = fxmlLoader.getController();
-            int item = tblViewCurrentStore.getSelectionModel().getSelectedItem().getProductID();
-            Stage nStage = new Stage();
-            nStage.setScene(scene);
-            nStage.initModality(Modality.APPLICATION_MODAL);
-            nStage.initStyle(StageStyle.TRANSPARENT);
-            nStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+    @FXML
+    private void tfSearchOnKeyReleased(KeyEvent event) {
+        ProductModel productModel = new ProductModel();
+        ArrayList<Product> products = productModel.searchProduct(tfSearch.getText());
+        ObservableList<Product> productObservableList = FXCollections.observableArrayList(products);
+
+        tblViewCurrentStore.setItems(productObservableList);
+
+        tblClmProductId.setCellValueFactory(new PropertyValueFactory<>("productID"));
+        tblClmProductName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        tblClmProductCatagory.setCellValueFactory(new PropertyValueFactory<>("category"));
+        tblClmProductSellPrice.setCellValueFactory(new PropertyValueFactory<>("sellingPrice"));
+        tblClmProductPursesPrice.setCellValueFactory(new PropertyValueFactory<>("originalPrice"));
+        tblClmProductquantity.setCellValueFactory(new PropertyValueFactory<>("inStock"));
+        tblClmProductBrand.setCellValueFactory(new PropertyValueFactory<>("brand"));
     }
 }

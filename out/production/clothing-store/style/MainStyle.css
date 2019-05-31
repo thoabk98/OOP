@@ -184,8 +184,8 @@ AnchorPane{
     -fx-background-color: none;
 }
 
-#tfSearch{
-   /* -fx-border-radius: 0px;
+.tfSearch{
+    -fx-border-radius: 0px;
     -fx-background-radius: 0px;
     -fx-padding: 5;
     -fx-font-size: 15px; 

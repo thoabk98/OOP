@@ -47,10 +47,12 @@ public class ProductModel {
     }
 
     public boolean updateProduct(Product product) {
+        System.out.println(product.inStock);
+
         connection = new DBConnection().getConnection();
         try {
             pst = connection.prepareStatement("UPDATE " + Constant.DB_NAME + ".product SET name=?, category=?, " +
-                    "selling_price=?, original_price=?, in-stock=?, brand=?, size=?, color=? WHERE product_id=?");
+                    "selling_price=?, original_price=?, in_stock=?, brand=?, size=?, color=? WHERE product_id=?");
             pst.setString(1, product.name);
             pst.setString(2, product.category);
             pst.setDouble(3, product.sellingPrice);
@@ -73,6 +75,24 @@ public class ProductModel {
 
     }
 
+
+    public boolean updateInStock(int id, int newInStock) {
+        connection = new DBConnection().getConnection();
+        try {
+            pst = connection.prepareStatement("UPDATE " + Constant.DB_NAME + ".product SET in_stock=? WHERE product_id=?");
+            pst.setInt(1, newInStock);
+            pst.setInt(2, id);
+            pst.executeUpdate();
+            pst.close();
+            connection.close();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public boolean deleteProduct(int id) {
         connection = new DBConnection().getConnection();
         try {
@@ -88,6 +108,69 @@ public class ProductModel {
         }
 
         return false;
+    }
+
+    public Product searchProduct(int id) {
+        Product product = new Product();
+        connection = new DBConnection().getConnection();
+        try {
+            pst = connection.prepareStatement("SELECT * FROM " + Constant.DB_NAME + ".product WHERE product_id=?");
+            pst.setInt(1, id);
+            rs = pst.executeQuery();
+
+            if (rs.next()) {
+                product.productID = id;
+                product.name = rs.getString(2);
+                product.category = rs.getString(3);
+                product.sellingPrice = rs.getDouble(4);
+                product.originalPrice = rs.getDouble(5);
+                product.inStock = rs.getInt(6);
+                product.brand = rs.getString(7);
+            }
+
+            rs.close();
+            pst.close();
+            connection.close();
+            return product;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public ArrayList<Product> searchProduct(String name) {
+        ArrayList<Product> products = new ArrayList<>();
+        connection = new DBConnection().getConnection();
+        try {
+            pst = connection.prepareStatement("SELECT * FROM " + Constant.DB_NAME + ".product WHERE name LIKE ?");
+            pst.setString(1, name + '%');
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Product product = new Product();
+
+                product.productID = rs.getInt(1);
+                product.name = rs.getString(2);
+                product.category = rs.getString(3);
+                product.sellingPrice = rs.getDouble(4);
+                product.originalPrice = rs.getDouble(5);
+                product.inStock = rs.getInt(6);
+                product.brand = rs.getString(7);
+                products.add(product);
+            }
+
+            rs.close();
+            pst.close();
+            connection.close();
+            return products;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public ArrayList<Product> getProductList() {

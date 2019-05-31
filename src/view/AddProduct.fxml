@@ -60,7 +60,7 @@
                         <Pane GridPane.columnIndex="6" GridPane.rowIndex="7" />
                         <Pane GridPane.columnIndex="6" GridPane.rowIndex="9" />
                         <Button fx:id="btnSave" mnemonicParsing="false" onAction="#btnSaveOnAction" text="Save" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="11" />
-<!--                        <Button fx:id="btnUpdate" mnemonicParsing="false" onAction="#btnUpdateOnAction" text="Update" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="9" />-->
+                        <Button fx:id="btnUpdate" mnemonicParsing="false" visible="false" onAction="#btnUpdateOnAction" text="Update" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="9" />
                   <Label layoutX="10.0" layoutY="257.0" GridPane.rowIndex="10" />
                   <Label layoutX="10.0" layoutY="257.0" text="Brand" GridPane.columnIndex="4" GridPane.rowIndex="4" />
                   <TextField fx:id="tfProductSize" GridPane.columnIndex="4" GridPane.columnSpan="3" GridPane.rowIndex="1" />

@@ -1,15 +1,26 @@
-package Test;
+package test;
 
-import dataStruct.User;
-import model.UserModel;
+import javafx.application.Application;
 
-import java.util.ArrayList;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 
-public class Test {
+import javafx.stage.Stage;
+
+
+public class Test extends Application {
+
+    @Override
+    public void start(Stage primaryStage) throws Exception{
+        Parent root = FXMLLoader.load(getClass().getResource("/view/Employee.fxml"));
+        primaryStage.setTitle("Store Management");
+        primaryStage.setScene(new Scene(root, 1000, 1000));
+        primaryStage.show();
+    }
+
+
     public static void main(String[] args) {
-        UserModel userModel = new UserModel();
-        ArrayList<User> userArrayList = userModel.getUserList();
-        for (User user: userArrayList)
-            System.out.println(user.toString());
+        launch(args);
     }
 }
